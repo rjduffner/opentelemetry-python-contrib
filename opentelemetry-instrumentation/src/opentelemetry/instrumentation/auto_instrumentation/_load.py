@@ -100,18 +100,8 @@ def _load_instrumentors(distro):
             continue
 
         try:
-            entry_point_dist = entry_point_finder.dist_for(entry_point)
-            conflict = get_dist_dependency_conflicts(entry_point_dist)
-            if conflict:
-                _logger.debug(
-                    "Skipping instrumentation %s: %s",
-                    entry_point.name,
-                    conflict,
-                )
-                continue
-
             # tell instrumentation to not run dep checks again as we already did it above
-            distro.load_instrumentor(entry_point, skip_dep_check=True)
+            distro.load_instrumentor(entry_point)
             _logger.debug("Instrumented %s", entry_point.name)
         except ImportError:
             # in scenarios using the kubernetes operator to do autoinstrumentation some
